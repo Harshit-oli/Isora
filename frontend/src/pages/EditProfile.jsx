@@ -26,7 +26,7 @@ const EditProfile = () => {
      setFrontendImage(URL.createObjectURL(file));
     }
      const dispatch=useDispatch();
-
+     
     const handleEditProfile=async()=>{
       setLoading(true);
     try {
