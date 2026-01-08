@@ -6,11 +6,11 @@ const loopSchema=new mongoose.Schema({
            ref:"User",
            required:true,
        },
-       mediaType:{
-           type:String,
-           enum:["Image","Video"],
-           required:true,
-       },
+    //    mediaType:{
+    //        type:String,
+    //        enum:["video"],
+    //        required:true,
+    //    },
        media:{
            type:String,
            required:true,

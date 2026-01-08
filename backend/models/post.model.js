@@ -8,7 +8,7 @@ const postSchema=new mongoose.Schema({
     },
     mediaType:{
         type:String,
-        enum:["Image","Video"],
+        enum:["image","video"],
         required:true,
     },
     media:{

@@ -26,6 +26,9 @@ export const uploadLoop=async(req,res)=>{
     }
 }
 
+// yha loop m hum ek cheez or karenge baad m ki hum only videos hi upload kar payem=nge abhi ke liye videos and photos dono upload ho sakti h
+
+
 export const getAllLoops=async (req,res)=>{
     try {
         const loops=await Loop.find({}).populate("author","name userName profileImage")

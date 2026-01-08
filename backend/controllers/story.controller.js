@@ -2,7 +2,7 @@ import uploadOnCloudinary from "../config/cloudinary.js";
 import Story from "../models/story.model.js"
 import User from "../models/user.model.js"
 
-export const uploadStory=async(req,re)=>{
+export const uploadStory=async(req,res)=>{
     try {
         const user=await User.findById(req.userId)
         if(user.story){
