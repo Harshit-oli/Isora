@@ -10,6 +10,7 @@ import GetSuggestedUsers from "./hooks/GetSuggestedUsers"
 import Profile from './pages/Profile'
 import EditProfile from './pages/EditProfile'
 import Upload from './pages/Upload'
+import GetAllPost from './hooks/GetAllPost'
 export const serverUrl="http://localhost:3000"
 const App = () => {
   // GetCurrentUser(); 
@@ -18,6 +19,7 @@ const App = () => {
     <div>
       <GetCurrentUser/>
       <GetSuggestedUsers/>
+      <GetAllPost/>
       <Routes>
         <Route path='/signup' element={!userData ? <SignUp/> :<Navigate to={"/"}/>}/>
         <Route path='/login' element={!userData?<SignIn/>:<Navigate to={"/"}/>}/>
