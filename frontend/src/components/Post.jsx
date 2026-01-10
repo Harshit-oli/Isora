@@ -12,6 +12,7 @@ const Post = ({postData}) => {
          </div>
          <div className='w-[200px] font-semibold truncate'>{postData.author?.userName}</div>
          </div>
+         {/* <div className='px-[10px] w-[80px] md:w-[100px] py-[5px] h-[30px] md:h-[]'></div> */}
       </div>
     </div>
   )
