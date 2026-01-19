@@ -4,7 +4,7 @@ import { FiVolumeX } from "react-icons/fi";
 
 const VideoPlayer = ({media}) => {
     const videoTag=useRef();
-    const [mute,setMute]=useState(false);
+    const [mute,setMute]=useState(true);
     const [isPlaying,setIsplaying]=useState(true);
     
     const handleClick=()=>{
@@ -24,7 +24,7 @@ const VideoPlayer = ({media}) => {
 
   return (
     <div className='h-[100%] relative cursor-pointer max-w-full rounded-full overFlow-hidden'>
-      <video ref={videoTag} src={media} autoPlay loop className='h-[100%] cursor-pointer w-full object-cover rounded-2xl' onClick={handleClick}></video>
+      <video ref={videoTag} src={media} autoPlay muted loop className='h-[100%] cursor-pointer w-full object-cover rounded-2xl' onClick={handleClick}></video>
       <div className='absolute bottom-[10px] right-[10px]' onClick={()=>setMute(!mute)}>
         {!mute ? <FiVolume2 className='w-[20px] h-[20px] text-white font-semibold'/> 
         : <FiVolumeX className='w-[20px] h-[20px] text-white font-semibold'/>}

@@ -38,7 +38,7 @@ export const getAllPosts=async (req,res)=>{
 export const like=async (req,res)=>{
     try {
         const postId=req.params.postId
-        const post =await post.findById(postId)
+        const post =await Post.findById(postId)
         if(!post){
             return res.status(400).json({
                 message:"post not found",
@@ -53,7 +53,7 @@ export const like=async (req,res)=>{
             post.likes.push(req.userId);
         }
         await post.save()
-        post.populate("author","name userName profileImage")
+        await post.populate("author","name userName profileImage")
         return res.status(200).json(post)
     } catch (error) {
           return res.status(500).json({message:`likePost error ${error}`});
@@ -63,7 +63,7 @@ export const like=async (req,res)=>{
 export const comment=async(req,res)=>{
     try {
         const {message}=req.body;
-        const postId=req.params.PostId
+        const postId=req.params.postId
         const post=await Post.findById(postId)
         if(!post){
            return res.status(400).json({
@@ -75,8 +75,8 @@ export const comment=async(req,res)=>{
             message
         })
         await post.save();
-        post.populate("author","name userName profileImage");
-        post.populate("comments.author")
+        await post.populate("author","name userName profileImage");
+        await post.populate("comments.author")
         return res.status(200).json(post)
     } catch (error) {
         return res.status(500).json({message:`comments error ${error}`}); 

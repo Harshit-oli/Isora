@@ -135,7 +135,7 @@ const Upload = () => {
             }
             {
             mediaType=="video" && <div className='w-[80%] max-w-[500px] h-[250px] flex flex-col items-center justify-center mt-[5vh]'>
-              <VideoPlayer media={frontendMedia}/>
+              <VideoPlayer media={frontendMedia} />
               {uploadType!="story" && <input type="text" className='w-full border-b-gray-400 border-b-2 outline-none px-[10px] py-[5px] text-white mt-[20px]'
               placeholder='Write Caption' onChange={(e)=>setCaption(e.target.value)} value={caption || ""}/>}
             </div>
