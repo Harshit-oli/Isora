@@ -9,12 +9,14 @@ import { setUserData } from '../redux/userSlice';
 import logo2 from "../assets/logo2.png"
 import Nav from '../components/Nav';
 import Home from './Home';
+import FollowButton from '../components/FollowButton';
 const Profile = () => {
 
     const {userName}=useParams();   // yha useParams mai params mai value Link ke through aayi hogi humne Link<to="/getProfile/:userName"></Link> kuch yese kiya hoga
     const dispatch=useDispatch()
     const {profileData,userData}=useSelector(state=>state.user);
     const navigate=useNavigate();
+
 
     const handleProfile=async()=>{
         try {
@@ -65,15 +67,12 @@ const Profile = () => {
           <div className="flex items-center justify-center gap-[20px]">
             <div className='flex relative'>
               {/* className='w-full h-[150px] flex items-start gap-[20px] lg:gap-[50px] pt-[20px] px-[10px] justify' */}
-              <div className='w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden'>
-                    <img src={profileData?.profieImage || logo2} alt=""  className='w-full object-cover'/>
+
+              {profileData?.followers?.slice(0,3).map((user,index)=>(
+                  <div key={index} className={`w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden ${index>0?`absolute left-[${index*9}]`:""}`}>
+                    <img src={user?.profileImage || logo2} alt=""  className='w-full object-cover'/>
                 </div>
-                <div className='w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden absolute left-[10px]'>
-                    <img src={profileData?.profieImage || logo2} alt=""  className='w-full object-cover'/>
-                </div>
-                <div className='w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden absolute left-[16px]'>
-                    <img src={profileData?.profieImage || logo2} alt=""  className='w-full object-cover'/>
-                </div>
+              ))}
             </div>
             <div className='text-white text-[22px] md:text-[30px] font-semibold'>{profileData?.followers.length}</div>
           </div>
@@ -106,7 +105,7 @@ const Profile = () => {
         {profileData?._id!=userData?._id 
         &&
         <>
-         <button className='px-[10px] min-w-[150px] py-[5px] h-[40px] bg-[white] cursor-pointer rounded-2xl'>Follow</button>
+         <FollowButton tailwind={'px-[10px] min-w-[150px] py-[5px] h-[40px] bg-[white] cursor-pointer rounded-2xl'} targetUserId={profileData?._id} onFollowChange={handleProfile}/>
          <button className='px-[10px] min-w-[150px] py-[5px] h-[40px] bg-[white] cursor-pointer rounded-2xl'>Message</button>
         </>
         }

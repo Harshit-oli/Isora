@@ -11,14 +11,22 @@ import { IoSend } from "react-icons/io5";
 import { serverUrl } from '../App';
 import axios from 'axios';
 import { setPostData } from '../redux/postSlice';
+import { setUserData } from '../redux/userSlice';
+import FollowButton from './FollowButton';
 
 
 const Post = ({post}) => {
   const {userData}=useSelector((state)=>state.user);
   const {postData}=useSelector((state)=>state.post);
-  const [showComment,setShowComment]=useState(true);
+  const [showComment,setShowComment]=useState(false);
   const [message,setMessage]=useState("");
   const dispatch=useDispatch();
+
+  
+  const isSaved = userData?.saved?.some(
+  p => p?._id === post?._id
+);
+
 
   const handleLike=async ()=>{
     try {
@@ -43,6 +51,15 @@ const Post = ({post}) => {
       console.log(error);
     }
   }
+
+  const handleSaved=async ()=>{
+    try {
+      const result=await axios.get(`${serverUrl}/api/post/saved/${post._id}`,{withCredentials:true});
+      dispatch(setUserData(result.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className='w-[90%] min-h-[450px] flex flex-col gap-[10px]
      bg-white items-center shadow-2xl shadow-[#00000058] rounded-2xl pb-[20px]'>
@@ -53,7 +70,9 @@ const Post = ({post}) => {
          </div>
          <div className='w-[120px] font-semibold truncate'>{post.author?.userName}</div>
          </div>
-         <button className='px-[10px] w-[60px] md:w-[100px] py-[5px] h-[30px] md:h-[40px] bg-[black] text-white rounded-2xl text-[14px] md:text-[16px]'>Follow</button>
+         {userData._id !== post.author._id && 
+         <FollowButton tailwind={'px-[10px] w-[60px] md:w-[100px] py-[5px] h-[30px] md:h-[40px] bg-[black] text-white rounded-2xl text-[14px] md:text-[16px]'} targetUserId={post.author._id}/>
+         }
       </div>
       <div className='w-[90%] flex items-center justify-center'>
                   {
@@ -74,15 +93,16 @@ const Post = ({post}) => {
             {post.likes.includes(userData._id) && <FaHeart className='w-[25px] cursor-pointer h-[25px] text-red-600' onClick={handleLike}/>}
             <span>{post.likes.length}</span>
           </div>
-          <div className='flex justify-center items-center gap-[5px]'>
+          <div className='flex justify-center items-center gap-[5px]' onClick={()=>setShowComment(prev=>!prev)}>
             <MdInsertComment className='w-[25px] cursor-pointer h-[25px]'/>
             <span>{post.comments.length}</span>
           </div>
         </div>
-        <div>
-          {!userData.saved.includes(post?._id) && <FaRegBookmark className='w-[25px] cursor-pointer h-[25px]'/>}
-           {userData.saved.includes(post?._id) && <FaBookmark className='w-[25px] cursor-pointer h-[25px]'/>}
+        <div onClick={handleSaved}>
+        {!isSaved && <FaRegBookmark className="w-[25px] h-[25px] cursor-pointer" />}
+        {isSaved && <FaBookmark className="w-[25px] h-[25px] cursor-pointer" />}
         </div>
+
       </div>
      {post.caption && <div className='w-full px-[20px] gap-[10px] flex justify-start items-center'>
         <h1>{post.author.userName}</h1>
@@ -101,7 +121,7 @@ const Post = ({post}) => {
         </div>
         <div className='w-full max-h-[300px] overflow-auto'>
         {post.comments?.map((com,index)=>(
-          <div key={index}>
+          <div key={index} className='w-full px-[20px] py-[20px] flex items-center gap-[20px] border-b-2 border-b-gray-200'>
          <div className='w-[40px] h-[40px] md:w-[60px] md:h-[60px] border-2 border-black rounded-full cursor-pointer overflow-hidden'>
          <img src={com.author.profileImage || logo2} alt=""  className='w-full object-cover'/>
          </div>

@@ -9,7 +9,7 @@ postRouter.post("/upload",isAuth,upload.single("media"),uploadPost)
 postRouter.get("/getAll",isAuth,getAllPosts)
 postRouter.get("/like/:postId",isAuth,like)
 postRouter.post("/comment/:postId",isAuth,comment) 
-postRouter.get("/save/:postId",isAuth,save) 
+postRouter.get("/saved/:postId",isAuth,save) 
 
 //////--Note->---- req.file hume upload.single likhne se mil jayega-----////////
 

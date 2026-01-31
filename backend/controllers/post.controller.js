@@ -28,7 +28,9 @@ export const uploadPost=async(req,res)=>{
 
 export const getAllPosts=async (req,res)=>{
     try {
-        const posts=await Post.find({}).populate("author","name userName profileImage").sort({createdAt:-1})
+        const posts=await Post.find({})
+        .populate("author","name userName profileImage")
+        .populate("comments.author","name userName profileImage").sort({createdAt:-1})
         return res.status(200).json(posts)
     } catch (error) {
         return res.status(500).json({message:`getallpost error ${error}`});
@@ -86,8 +88,8 @@ export const comment=async(req,res)=>{
 export const save=async(req,res)=>{
     try {
         const postId=req.params.postId
-        const post =await post.findById(postId)
-        const user=await User.find(req.userId);
+        const post =await Post.findById(postId);
+        const user=await User.findById(req.userId);
         if(!post){
             return res.status(400).json({
                 message:"post not found",
@@ -98,16 +100,16 @@ export const save=async(req,res)=>{
                 message:"user not found",
             })
         }
-        const alreadySave=user.saved.some(id=>id.toString()==req.postId.toString())
+        const alreadySave=user.saved.some(id=>id.toString()==postId.toString())
 
         if(alreadySave){
-            user.saved=user.saved.filter(id=>id.toString() !=req.postId.toString())
+            user.saved=user.saved.filter(id=>id.toString() !=postId.toString())
         }
         else{
             user.saved.push(postId);
         }
         await user.save()
-        user.populate("saved");
+        await user.populate("saved");
         return res.status(200).json(user)
     } catch (error) {
           return res.status(500).json({message:`savedPost error ${error}`});
