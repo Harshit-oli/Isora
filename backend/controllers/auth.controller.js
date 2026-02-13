@@ -40,7 +40,6 @@ export const register=async(req,res)=>{
             userName,
             email,
             password:hashedPassword,
-            
         })
 
         const token=await genToken(user._id);

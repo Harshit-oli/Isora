@@ -41,7 +41,7 @@ export const getAllLoops=async (req,res)=>{
 export const like=async (req,res)=>{
     try {
         const loopId=req.params.loopId
-        const loop =await Loop.findById(postId)
+        const loop =await Loop.findById(loopId)
         if(!loop){
             return res.status(400).json({
                 message:"post not found",
@@ -56,7 +56,7 @@ export const like=async (req,res)=>{
             loop.likes.push(req.userId);
         }
         await loop.save()
-        loop.populate("author","name userName profileImage")
+        await loop.populate("author","name userName profileImage")
         return res.status(200).json(loop)
     } catch (error) {
           return res.status(500).json({message:`likeLoop error ${error}`});
@@ -78,8 +78,8 @@ export const comment=async(req,res)=>{
             message
         })
         await loop.save();
-        loop.populate("author","name userName profileImage");
-        loop.populate("comments.author")
+        await loop.populate("author","name userName profileImage");
+        await loop.populate("comments.author")
         return res.status(200).json(loop)
     } catch (error) {
          return res.status(500).json({message:`loopComment error ${error}`});
